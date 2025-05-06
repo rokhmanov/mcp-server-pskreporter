@@ -1,0 +1,42 @@
+There is a public MQTT server which streams information about live DX spots 
+(transmitting amateur radio stations). Documentation is here: http://mqtt.pskreporter.info/  
+
+I need to build a python MCP server that:
+1. Connects to the Pskreporter MQTT server and keeps "last 15 min" cache of received spots
+2. Provides tool for retrieving a list of spots which can be filtered by: 
+"band", "mode", "sendercountry", "senderlocator", "sendercall"
+
+Examples of values: 
+- band: "10m", "13cm"
+- mode: "FT8", "WSPR"
+- locator: "EN51" or "EN"
+- country: 221, 089
+
+Additional notes:
+1. The mqtt.pskreporter.info values "sendercountry" and "receivercountry" can be mapped to a country names
+by using the "Entity Code" column in the attached "ARRL DXCC LIST" file (2022_Current_Deleted.txt file name).
+
+2. Visit https://modelcontextprotocol.io/llms-full.txt for the latest MCP documentation
+
+Examples of queries will be sent to LLM using this MCP server: 
+ - "I need to contact 10 Japan stations on 14MHz amateur band using FT8 mode - what are their frequencies?"
+ - "What bands and modes the amateur station W9KM operating now?"
+ - "What is the best DX I can hear now on 80m band?" (DX means the longest distance spot from me)
+
+The MCP server should have hardcoded information about me (the owner): locator, call, country. 
+So the queries like "I need to contact ..." would apply the owner filtering.
+
+The amount of data streaming from the public MQTT server is huge, and server 
+implemented a network traffic shaping per client, so there is no way to retrieving a whole 
+set of streamed data.
+Client can subscribe to the topic using a set wildcards needed and wait for information 
+(as explained in the http://mqtt.pskreporter.info/ documentation).
+
+Before implementing the MCP server, I'd like to discuss its functionality - how the MCP server
+will communicate with the client and the LLM.
+Per my understanding, the user query will force the MCP server to subscribe to a particular
+topic applying all necessary parameters and wildcards and start collecting the information.
+User will need to wait for some time untill the spots will start to arrive. 
+Hows the interaction would continue with to user, in cases when MCP server request is only a part of 
+a complex prompt involving other AI tools or LLM functionality?
+
