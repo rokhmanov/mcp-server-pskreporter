@@ -31,7 +31,7 @@ langgraph-sdk==0.1.61
 langsmith==0.3.30
 matplotlib==3.10.1
 matplotlib-inline==0.1.7
-mcp==1.7.1
+mcp==1.9.1
 mcp-client==0.2.0
 mcp-server==0.1.4
 numpy==2.2.4

@@ -8,10 +8,18 @@ from typing import Dict, List, Optional, Any
 
 import paho.mqtt.client as mqtt
 from mcp.server import FastMCP
+from mcp.types import LATEST_PROTOCOL_VERSION
 from pydantic import BaseModel
 
+
+capabilities = {
+    "tools": {
+        "listChanged": False  # Static tool list
+    }
+}
+
 # Initialize MCP server
-mcp = FastMCP("pskreporter")
+mcp = FastMCP("pskreporter", protocol_version=LATEST_PROTOCOL_VERSION)
 mqtt_client = None
 dxcc_entities = {}  # entity_code -> entity_name
 mqtt_connected = False
@@ -309,7 +317,16 @@ def format_spots_as_markdown(spots, duration, total_spots, unique_stations):
     return md
 
 # Main MCP tool - simplified get_spots method
-@mcp.tool()
+@mcp.tool(
+    annotations={
+        "readOnlyHint": False,  # Performs data collection
+        "idempotentHint": False,  # Results vary over time
+        "openWorldHint": True   # Interacts with external service
+    },
+    description="Collect real-time amateur radio propagation spots from PSKReporter MQTT feed. "
+               "Returns formatted data about who is hearing whom on various frequencies and modes. "
+               "This tool connects to external PSKReporter service and results vary over time."
+)
 def get_spots(band: Optional[str] = None, 
               mode: Optional[str] = None,
               sendercall: Optional[str] = None,
@@ -326,7 +343,13 @@ def get_spots(band: Optional[str] = None,
     debug_print(f"MQTT connected: {mqtt_connected}")
     
     if not mqtt_client or not mqtt_connected:
-        return "# Error\n\nMQTT client not connected. Please check server status."
+        return {
+            "content": [{
+            "type": "text", 
+            "text": "# Error\n\nMQTT client not connected. Please check server status."
+        }],
+        "isError": True
+    }
     
     params = {
         'band': band,
@@ -386,14 +409,25 @@ def get_spots(band: Optional[str] = None,
         
         debug_print(f"Returning markdown response with {len(spots)} spots from {unique_stations} stations")
         debug_print("*** GET_SPOTS COMPLETE ***\n")
-        return markdown_response
+        return {
+            "content": [{
+                    "type": "text",
+                    "text": markdown_response
+                }],
+            "isError": False
+    }
         
     except Exception as e:
         debug_print(f"Error in get_spots: {e}")
-        import traceback
-        debug_print("Exception traceback:")
-        debug_print(traceback.format_exc())
-        return f"# Error\n\nInternal server error: {str(e)}"
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"# Error\n\nInternal server error: {str(e)}"
+                }
+            ],
+            "isError": True
+        }
     finally:
         # Restore the original message handler
         mqtt_client.on_message = original_handler
