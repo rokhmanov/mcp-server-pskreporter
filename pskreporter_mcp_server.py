@@ -1,16 +1,12 @@
 # pskreporter_mcp_server.py
-import asyncio
 import json
 import time
 import sys
-import threading
-from typing import Dict, List, Optional, Any
+from typing import Optional
 
 import paho.mqtt.client as mqtt
 from mcp.server import FastMCP
 from mcp.types import LATEST_PROTOCOL_VERSION
-from pydantic import BaseModel
-
 
 capabilities = {
     "tools": {

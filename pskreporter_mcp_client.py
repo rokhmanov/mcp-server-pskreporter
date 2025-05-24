@@ -8,10 +8,8 @@ This client works with the simplified MCP server using stdio transport
 
 import asyncio
 import json
-import subprocess
 import sys
 import argparse
-import time
 from typing import Dict, Any
 
 class PSKReporterSTDIOClient:
