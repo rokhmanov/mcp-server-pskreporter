@@ -1,0 +1,19 @@
+FROM qwen2.5-coder:latest
+
+# Ollama sets default context size to 2K
+# For better model performance set it to the max supported by the model during training
+PARAMETER num_ctx 32768
+
+# Set temperature to 0 for deterministic outputs
+# Lower values = more consistent/predictable outputs
+PARAMETER temperature 0
+
+# Set a fixed seed for reproducible results
+PARAMETER seed 42
+
+# You can also add other parameters if needed:
+# PARAMETER top_k 40      # limit token selection to top K
+# PARAMETER top_p 0.9     # nucleus sampling threshold
+
+# Create the custom model command:
+# ollama create qwen2.5-coder-32k-deterministic -f Modelfile

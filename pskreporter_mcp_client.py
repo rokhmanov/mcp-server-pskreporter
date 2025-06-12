@@ -137,15 +137,23 @@ class PSKReporterSTDIOClient:
     
     def parse_mcp_response(self, mcp_result: Dict[str, Any]) -> str:
         """Parse MCP response format to extract the actual content."""
-        if "isError" in mcp_result and mcp_result["isError"]:
-            return "# Error\n\nMCP error in response"
+        # FastMCP returns the string directly as the result for tool functions
+        if isinstance(mcp_result, str):
+            return mcp_result
         
-        if "content" in mcp_result and mcp_result["content"]:
-            # Get the first content item
-            content_item = mcp_result["content"][0]
-            if content_item.get("type") == "text":
-                # Return the text content directly (it's now Markdown)
-                return content_item["text"]
+        # Handle the old format with content array (for compatibility)
+        if isinstance(mcp_result, dict):
+            if "isError" in mcp_result and mcp_result["isError"]:
+                return "# Error\n\nMCP error in response"
+            
+            if "content" in mcp_result and mcp_result["content"]:
+                # Get the first content item
+                content_item = mcp_result["content"][0]
+                if content_item.get("type") == "text":
+                    return content_item["text"]
+            
+            # If it's a dict but not the expected format, try to return it as a string
+            return str(mcp_result)
         
         return "# Error\n\nUnexpected response format"
     
