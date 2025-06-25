@@ -326,7 +326,7 @@ def get_spots(band: Optional[str] = None,
               receiverlocator: Optional[str] = None,
               sendercountry: Optional[str] = None,
               receivercountry: Optional[str] = None,
-              duration: int = 30) -> str:
+              duration: int = 10) -> str:
     """
     Collect real-time amateur radio propagation spots from PSKReporter.
     
@@ -336,7 +336,7 @@ def get_spots(band: Optional[str] = None,
     frequencies, modes, signal strength, and locations.
     
     **Important Notes:**
-    - **Collection Time**: This tool requires waiting time (default 30 seconds) to collect
+    - **Collection Time**: This tool requires waiting time (default 10 seconds) to collect
       real-time data from the PSKReporter network
     - **Filtering Strategy**: Use specific parameters to narrow results. Fewer filters
       mean more spots returned, but the response is limited to prevent oversized messages
@@ -352,23 +352,23 @@ def get_spots(band: Optional[str] = None,
     - `receiverlocator`: Maidenhead grid locator of receiving station
     - `sendercountry`: DXCC entity code for sender's country (use search_dxcc_entities() to find codes)
     - `receivercountry`: DXCC entity code for receiver's country
-    - `duration`: Collection time in seconds (default: 30, max: 50)
+    - `duration`: Collection time in seconds (default: 10, max: 10)
     
     **Common Use Cases:**
     1. **Find stations from a specific country**: Use `sendercountry` parameter
-       - Example: "Give me 10 FT8 Japan stations on 20m" → `get_spots(mode="FT8", sendercountry="339", band="20m", duration=50)`
+       - Example: "Give me 10 FT8 Japan stations on 20m" → `get_spots(mode="FT8", sendercountry="339", band="20m", duration=10)`
     
     2. **Check propagation to a specific location**: Use `receivercountry` and `receiverlocator`
-       - Example: "What FT8 stations from Japan can I hear on 160m" → `get_spots(mode="FT8", sendercountry="339", band="160m", duration=50)`
+       - Example: "What FT8 stations from Japan can I hear on 160m" → `get_spots(mode="FT8", sendercountry="339", band="160m", duration=10)`
     
     3. **Monitor a specific station**: Use `sendercall` parameter
-       - Example: "On what bands and modes does W9KM operate" → `get_spots(sendercall="W9KM", duration=50)`
+       - Example: "On what bands and modes does W9KM operate" → `get_spots(sendercall="W9KM", duration=10)`
     
     4. **Check band activity**: Use `band` parameter
-       - Example: "Show me 20m FT8 activity" → `get_spots(band="20m", mode="FT8", duration=30)`
+       - Example: "Show me 20m FT8 activity" → `get_spots(band="20m", mode="FT8", duration=10)`
     
     **Tips for Better Results:**
-    - Use longer `duration` (30-50 seconds) for better spot collection
+    - Use the full `duration` (10 seconds) for better spot collection
     - Combine multiple filters to get more specific results
     - Use `search_dxcc_entities()` to find country codes
     - Popular modes: FT8, FT4, CW, SSB
@@ -390,12 +390,12 @@ def get_spots(band: Optional[str] = None,
     debug_print(f"Parameters: sendercountry={sendercountry}, receivercountry={receivercountry}, duration={duration}")
     
     # Validate duration parameter
-    if duration < 10:
+    if duration < 5:
+        duration = 5
+        debug_print(f"Duration adjusted to minimum 5 seconds")
+    elif duration > 10:
         duration = 10
-        debug_print(f"Duration adjusted to minimum 10 seconds")
-    elif duration > 50:
-        duration = 50
-        debug_print(f"Duration capped at maximum 50 seconds")
+        debug_print(f"Duration capped at maximum 10 seconds")
     
     params = {
         'band': band, 'mode': mode, 'sendercall': sendercall,
@@ -413,7 +413,9 @@ def get_spots(band: Optional[str] = None,
             
             try:
                 # Wait for completion with a reasonable timeout
-                spots, error = future.result(timeout=duration + 10)  # Extra 10 seconds buffer
+                # Use a fixed timeout that's shorter than MCP client timeout
+                max_timeout = min(duration + 5, 15)  # Cap at 15 seconds total
+                spots, error = future.result(timeout=max_timeout)
                 
                 if error:
                     debug_print(f"Collection error: {error}")
@@ -430,7 +432,7 @@ def get_spots(band: Optional[str] = None,
                 
             except FutureTimeoutError:
                 debug_print("MQTT collection timed out")
-                return f"# Error\n\nCollection timed out after {duration + 10} seconds. Try reducing the duration or check your internet connection."
+                return f"# Error\n\nCollection timed out after {max_timeout} seconds. Try reducing the duration or check your internet connection."
         
     except Exception as e:
         debug_print(f"Error in get_spots: {e}")
@@ -570,7 +572,7 @@ To filter for stations from {entity_name}, use:
 - `sendercountry={entity_code}` for sender country filter
 - `receivercountry={entity_code}` for receiver country filter
 
-Example: `get_spots(sendercountry="{entity_code}", duration=50)`"""
+Example: `get_spots(sendercountry="{entity_code}", duration=10)`"""
     
     debug_print(f"Found {len(matches)} matches for query '{query}'")
     debug_print("*** SEARCH_DXCC_ENTITIES COMPLETE ***")
