@@ -146,12 +146,7 @@ This project uses `uv` for dependency management. Key commands:
 - `uv run python pskreporter_mcp_server.py` - Run the server
 - `uv run mcp dev pskreporter_mcp_server.py` - Run in development mode
 
-## License
-
-[Your License Here]
-
-## Contributing
-
-[Your Contributing Guidelines Here]
-
-
+---
+73!
+Andriy
+W9KM
