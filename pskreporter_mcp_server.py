@@ -3,6 +3,7 @@ import json
 import time
 import sys
 import threading
+import os
 from typing import Optional
 from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeoutError
 
@@ -13,6 +14,9 @@ from mcp.types import LATEST_PROTOCOL_VERSION, ToolAnnotations
 # Initialize MCP server
 mcp = FastMCP("PSKReporter DX Service", protocol_version=LATEST_PROTOCOL_VERSION)
 dxcc_entities = {}  # entity_code -> entity_name
+
+# Get the directory where this script is located
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Create a debug log file
 debug_log = open("mcp_server_debug.log", "w")
@@ -38,7 +42,11 @@ def load_dxcc_entities():
     
     debug_print("Loading DXCC entities...")
     try:
-        with open("dxcc.txt", "r") as f:
+        # Use the script directory to find dxcc.txt
+        dxcc_path = os.path.join(SCRIPT_DIR, "dxcc.txt")
+        debug_print(f"Looking for dxcc.txt at: {dxcc_path}")
+        
+        with open(dxcc_path, "r") as f:
             lines = f.readlines()
         
         dxcc_entities = {}
@@ -55,7 +63,7 @@ def load_dxcc_entities():
                     debug_print(f"Error processing line: {line} - {e}")
         debug_print(f"Loaded {len(dxcc_entities)} DXCC entities")
     except FileNotFoundError:
-        debug_print("Warning: dxcc.txt not found, using empty entity list")
+        debug_print(f"Warning: dxcc.txt not found at {dxcc_path}, using empty entity list")
     except Exception as e:
         debug_print(f"Error loading DXCC entities: {e}")
 
