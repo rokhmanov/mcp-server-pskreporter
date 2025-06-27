@@ -31,10 +31,33 @@ A Model Context Protocol (MCP) server that provides real-time amateur radio prop
    uv sync
    ```
 
-3. **Verify the server works**
+3. **Choose your installation method:**
+
+   **Option A: Development Mode (For direct command usage)**
    ```bash
-   uv run pskreporter-mcp-server
+   uv pip install -e .
    ```
+   This installs the package in development mode in the local virtual environment, making the `pskreporter-mcp-server` command available within this project's environment. Use this if you want to run the command directly from the project directory.
+
+   **Option B: Project-based execution (For Claude Desktop - No installation needed)**
+   ```bash
+   uv run --project . pskreporter-mcp-server
+   ```
+   This runs the server directly from the project directory without installation. This is what Claude Desktop uses by default.
+
+4. **Verify the server works**
+   
+   If you used Option A (development mode):
+   ```bash
+   # Make sure you're in the project directory
+   pskreporter-mcp-server
+   ```
+   
+   If you used Option B (project-based):
+   ```bash
+   uv run --project . pskreporter-mcp-server
+   ```
+   
    The server should start and be ready to accept MCP connections.
 
 ## Adding to Claude Desktop
@@ -195,6 +218,14 @@ This server connects to the PSKReporter MQTT feed at `mqtt.pskreporter.info` to 
 5. **"File not found" errors**
    - Make sure the working directory points to the folder containing `pskreporter_mcp_server.py`
    - Verify all project files are in the same directory
+
+6. **"program not found" or "Failed to spawn" errors**
+   - If you get "Failed to spawn 'pskreporter-mcp-server' caused by: program not found" when running the command directly, you need to install the package in development mode:
+     ```bash
+     uv pip install -e .
+     ```
+   - After installation, the `pskreporter-mcp-server` command will be available within the project's virtual environment
+   - **Note**: Claude Desktop uses `uv run --project` which doesn't require installation - the provided `claude_desktop_config.json` works without any additional setup
 
 ### Debug Information
 
