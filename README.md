@@ -6,7 +6,8 @@ A Model Context Protocol (MCP) server that provides real-time amateur radio prop
 
 - **Real-time Propagation Data**: Collect live spots from amateur radio stations worldwide
 - **Advanced Filtering**: Filter by band, mode, callsign, location, and country
-- **DXCC Entity Support**: Full country/territory mapping for precise filtering
+- **DXCC Entity Support**: Full country/territory mapping with intelligent name variations
+- **MCP Resource**: Discover available countries and their common variations
 - **Threaded Architecture**: Non-blocking MQTT collection for responsive performance
 
 ## Installation
@@ -79,30 +80,73 @@ uv run mcp dev pskreporter_mcp_server.py
 
 ## Usage
 
-Once connected to Claude Desktop, you can use these tools:
+Once connected to Claude Desktop, you can use these tools and resources:
 
-### `get_spots`
+### `get_spots` Tool
 Collect real-time amateur radio propagation spots with filtering options.
 
 **Parameters:**
-- `band`: Amateur radio band (e.g., "20m", "40m", "80m")
-- `mode`: Operating mode (e.g., "FT8", "FT4", "CW")
-- `sendercall`: Specific station callsign
-- `duration`: Collection time in seconds (5-10)
+- `band`: Amateur radio band (e.g., "20m", "40m", "80m", "160m", "10m", "15m", "17m", "30m", "12m", "6m", "2m")
+- `mode`: Operating mode (e.g., "FT8", "FT4", "CW", "SSB", "PSK31", "RTTY")
+- `sendercall`: Specific station callsign (e.g., "W9KM", "JA1ABC")
+- `receivercall`: Callsign of receiving station
+- `senderlocator`: Maidenhead grid locator of sending station (e.g., "EN51", "JO20")
+- `receiverlocator`: Maidenhead grid locator of receiving station
+- `sendercountry`: Country name for sender's country (e.g., "Japan", "USA", "Germany")
+- `receivercountry`: Country name for receiver's country
+- `duration`: Collection time in seconds (5-10, default: 10)
+
+**Country Name Features:**
+- **Case-insensitive**: "japan", "JAPAN", "Japan" all work the same
+- **Partial matching**: "swains" matches "Swains I.", "korea" matches "Republic of Korea"
+- **Common variations**: "USA", "UK", "Germany" are automatically mapped to their full names
+- **340+ entities**: Full DXCC entity support for worldwide coverage
 
 **Examples:**
-- "Show me FT8 activity on 20m"
-- "Find stations from Japan on 40m"
+- "Show me FT8 activity on 20m from Japan"
+- "Find USA stations on 40m"
 - "What bands is W9KM operating on?"
+- "Show me stations from Germany on 80m"
 
-### `get_dxcc_entities`
-Get the complete list of DXCC entities (country codes and names).
+### `dxcc_entities` Resource
+Discover available countries and their variations for better filtering.
 
-### `search_dxcc_entities`
-Search for DXCC entities by country name.
+**Resource Features:**
+- **Complete Entity List**: All 340 DXCC entities with official names
+- **Name Variations**: Common variations for each country (e.g., "USA" for "United States of America")
+- **Usage Examples**: Ready-to-use examples for the `get_spots` tool
+- **Search Tips**: Guidance for effective country name usage
 
-**Example:**
-- "Find the entity code for Japan"
+**How to Use:**
+- Browse all available countries and territories
+- See common variations for each country
+- Get exact names to use in `get_spots` parameters
+- Discover new DXCC entities you might not know about
+
+**Example Resource Data:**
+```json
+{
+  "code": "291",
+  "name": "United States of America",
+  "name_variations": ["United States", "USA", "US", "America"]
+}
+```
+
+## Country Name Discovery
+
+The `dxcc_entities` resource provides comprehensive country information:
+
+- **Official Names**: Use exact DXCC entity names for best results
+- **Common Variations**: Popular abbreviations and alternative names
+- **Case Flexibility**: All names work regardless of capitalization
+- **Partial Matching**: Find countries even with incomplete names
+
+**Popular Examples:**
+- **United States**: "USA", "US", "America", "United States of America"
+- **United Kingdom**: "UK", "Great Britain", "Britain", "England"
+- **Germany**: "Germany", "Deutschland", "DE"
+- **Japan**: "Japan" (no common variations)
+- **Swains Island**: "Swains", "Swains I.", "Swains Island"
 
 ## Data Source
 
@@ -122,12 +166,17 @@ This server connects to the PSKReporter MQTT feed at `mqtt.pskreporter.info` to 
    - Use broader filters (fewer parameters)
    - Check your internet connection
 
-3. **Claude Desktop can't connect**
+3. **Country name not found**
+   - Use the `dxcc_entities` resource to find exact country names
+   - Try common variations (e.g., "USA" instead of "United States of America")
+   - Check for typos and try partial matches
+
+4. **Claude Desktop can't connect**
    - Verify the working directory path is correct
    - Ensure the server starts successfully when run manually: `uv run python pskreporter_mcp_server.py`
    - Check Claude Desktop logs for error messages
 
-4. **"File not found" errors**
+5. **"File not found" errors**
    - Make sure the working directory points to the folder containing `pskreporter_mcp_server.py`
    - Verify all project files are in the same directory
 
@@ -136,6 +185,7 @@ This server connects to the PSKReporter MQTT feed at `mqtt.pskreporter.info` to 
 The server creates a debug log file `mcp_server_debug.log` with detailed information about:
 - MQTT connection status
 - Spot collection progress
+- Country name resolution
 - Error messages and stack traces
 
 ## Development
@@ -145,6 +195,43 @@ This project uses `uv` for dependency management. Key commands:
 - `uv sync` - Install dependencies
 - `uv run python pskreporter_mcp_server.py` - Run the server
 - `uv run mcp dev pskreporter_mcp_server.py` - Run in development mode
+
+## Configuration
+
+### DXCC Entities Configuration
+
+The server uses a YAML-based configuration for DXCC entities (`dxcc_entities.yaml`) that provides:
+
+- **Easy Maintenance**: Country names and variations are stored in a human-readable YAML file
+- **Flexible Updates**: Add or modify country variations without touching code
+- **Structured Data**: Clear separation between canonical names and common variations
+
+**File Structure:**
+```yaml
+dxcc_entities:
+  "291":
+    canonical_name: "United States of America"
+    name_variations: ["USA", "US", "United States", "America"]
+  "339":
+    canonical_name: "Japan"
+    name_variations: []
+```
+
+**Adding Country Variations:**
+To add variations for a country, simply edit the `dxcc_entities.yaml` file:
+
+1. Find the country by its DXCC code
+2. Add variations to the `name_variations` array
+3. Restart the server to apply changes
+
+**Example:**
+```yaml
+"339":
+  canonical_name: "Japan"
+  name_variations: ["Nippon", "Nihon"]
+```
+
+The server automatically loads these changes on startup, making it easy to maintain and extend country name support.
 
 ---
 73!

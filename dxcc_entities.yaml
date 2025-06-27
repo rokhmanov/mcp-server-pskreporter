@@ -1,0 +1,1360 @@
+# DXCC Entities with name variations
+# This file contains all DXCC entities with their canonical names and common variations
+# Format: dxcc_code -> canonical_name + name_variations array
+
+dxcc_entities:
+  "001":
+    canonical_name: "Canada"
+    name_variations: []
+  
+  "003":
+    canonical_name: "Afghanistan"
+    name_variations: []
+  
+  "004":
+    canonical_name: "Agalega & St. Brandon Is."
+    name_variations: []
+  
+  "005":
+    canonical_name: "Aland Is."
+    name_variations: []
+  
+  "006":
+    canonical_name: "Alaska"
+    name_variations: []
+  
+  "007":
+    canonical_name: "Albania"
+    name_variations: []
+  
+  "009":
+    canonical_name: "American Samoa"
+    name_variations: []
+  
+  "010":
+    canonical_name: "Amsterdam & St. Paul Is."
+    name_variations: []
+  
+  "011":
+    canonical_name: "Andaman & Nicobar Is."
+    name_variations: []
+  
+  "012":
+    canonical_name: "Anguilla"
+    name_variations: []
+  
+  "013":
+    canonical_name: "Antarctica"
+    name_variations: []
+  
+  "014":
+    canonical_name: "Armenia"
+    name_variations: []
+  
+  "015":
+    canonical_name: "Asiatic Russia"
+    name_variations: ["AS Russia"]
+  
+  "016":
+    canonical_name: "New Zealand Subantarctic Islands"
+    name_variations: ["NZ Subantarctic Islands"]
+  
+  "017":
+    canonical_name: "Aves I."
+    name_variations: []
+  
+  "018":
+    canonical_name: "Azerbaijan"
+    name_variations: []
+  
+  "020":
+    canonical_name: "Baker & Howland Is."
+    name_variations: []
+  
+  "021":
+    canonical_name: "Balearic Is."
+    name_variations: []
+  
+  "022":
+    canonical_name: "Palau"
+    name_variations: []
+  
+  "024":
+    canonical_name: "Bouvet"
+    name_variations: []
+  
+  "027":
+    canonical_name: "Belarus"
+    name_variations: []
+  
+  "029":
+    canonical_name: "Canary Is."
+    name_variations: []
+  
+  "031":
+    canonical_name: "C. Kiribati (British Phoenix Is.)"
+    name_variations: ["Central Kiribati", "Phoenix Islands", "Phoenix Is.", "Phoenix Is"]
+  
+  "032":
+    canonical_name: "Ceuta & Melilla"
+    name_variations: ["Ceuta", "Melilla"]
+
+  "033":
+    canonical_name: "Chagos Is."
+    name_variations: ["Chagos Islands"]
+  
+  "034":
+    canonical_name: "Chatham Is."
+    name_variations: ["Chatham Islands"]
+  
+  "035":
+    canonical_name: "Christmas I."
+    name_variations: ["Christmas Island"]
+  
+  "036":
+    canonical_name: "Clipperton I."
+    name_variations: ["Clipperton Island"]
+  
+  "037":
+    canonical_name: "Cocos I."
+    name_variations: ["Cocos Islands"]
+  
+  "038":
+    canonical_name: "Cocos (Keeling) Is."
+    name_variations: ["Cocos (Keeling)", "Keeling Islands"]
+  
+  "040":
+    canonical_name: "Crete"
+    name_variations: []
+  
+  "041":
+    canonical_name: "Crozet I."
+    name_variations: ["Crozet Island"]
+  
+  "043":
+    canonical_name: "Desecheo I."
+    name_variations: ["Desecheo Island"]
+  
+  "045":
+    canonical_name: "Dodecanese"
+    name_variations: []
+  
+  "046":
+    canonical_name: "East Malaysia"
+    name_variations: []
+  
+  "047":
+    canonical_name: "Easter I."
+    name_variations: ["Easter Island"]
+  
+  "048":
+    canonical_name: "E. Kiribati (Line Is.)"
+    name_variations: ["East Kiribati", "Line Islands"]
+  
+  "049":
+    canonical_name: "Equatorial Guinea"
+    name_variations: []
+  
+  "050":
+    canonical_name: "Mexico"
+    name_variations: []
+  
+  "051":
+    canonical_name: "Eritrea"
+    name_variations: []
+  
+  "052":
+    canonical_name: "Estonia"
+    name_variations: []
+  
+  "053":
+    canonical_name: "Ethiopia"
+    name_variations: []
+  
+  "054":
+    canonical_name: "European Russia"
+    name_variations: ["EU Russia"]
+  
+  "056":
+    canonical_name: "Fernando de Noronha"
+    name_variations: []
+  
+  "060":
+    canonical_name: "Bahamas"
+    name_variations: []
+  
+  "061":
+    canonical_name: "Franz Josef Land"
+    name_variations: []
+  
+  "062":
+    canonical_name: "Barbados"
+    name_variations: []
+  
+  "063":
+    canonical_name: "French Guiana"
+    name_variations: []
+  
+  "064":
+    canonical_name: "Bermuda"
+    name_variations: []
+  
+  "065":
+    canonical_name: "British Virgin Is."
+    name_variations: ["BVI"]
+  
+  "066":
+    canonical_name: "Belize"
+    name_variations: []
+  
+  "069":
+    canonical_name: "Cayman Is."
+    name_variations: ["Cayman Islands"]
+  
+  "070":
+    canonical_name: "Cuba"
+    name_variations: []
+  
+  "071":
+    canonical_name: "Galapagos Is."
+    name_variations: ["Galapagos Islands"]
+  
+  "072":
+    canonical_name: "Dominican Republic"
+    name_variations: []
+  
+  "074":
+    canonical_name: "El Salvador"
+    name_variations: []
+  
+  "075":
+    canonical_name: "Georgia"
+    name_variations: []
+  
+  "076":
+    canonical_name: "Guatemala"
+    name_variations: []
+  
+  "077":
+    canonical_name: "Grenada"
+    name_variations: []
+  
+  "078":
+    canonical_name: "Haiti"
+    name_variations: []
+  
+  "079":
+    canonical_name: "Guadeloupe"
+    name_variations: []
+  
+  "080":
+    canonical_name: "Honduras"
+    name_variations: []
+  
+  "082":
+    canonical_name: "Jamaica"
+    name_variations: []
+  
+  "084":
+    canonical_name: "Martinique"
+    name_variations: []
+  
+  "086":
+    canonical_name: "Nicaragua"
+    name_variations: []
+  
+  "088":
+    canonical_name: "Panama"
+    name_variations: []
+  
+  "089":
+    canonical_name: "Turks & Caicos Is."
+    name_variations: ["Turks & Caicos Islands", "Turks & Caicos"]
+  
+  "090":
+    canonical_name: "Trinidad & Tobago"
+    name_variations: []
+  
+  "091":
+    canonical_name: "Aruba"
+    name_variations: []
+  
+  "094":
+    canonical_name: "Antigua & Barbuda"
+    name_variations: []
+  
+  "095":
+    canonical_name: "Dominica"
+    name_variations: []
+  
+  "096":
+    canonical_name: "Montserrat"
+    name_variations: []
+  
+  "097":
+    canonical_name: "St. Lucia"
+    name_variations: []
+  
+  "098":
+    canonical_name: "St. Vincent"
+    name_variations: []
+  
+  "099":
+    canonical_name: "Glorioso Is."
+    name_variations: []
+  
+  "100":
+    canonical_name: "Argentina"
+    name_variations: []
+  
+  "103":
+    canonical_name: "Guam"
+    name_variations: []
+  
+  "104":
+    canonical_name: "Bolivia"
+    name_variations: []
+  
+  "105":
+    canonical_name: "Guantanamo Bay"
+    name_variations: []
+  
+  "106":
+    canonical_name: "Guernsey"
+    name_variations: []
+  
+  "107":
+    canonical_name: "Guinea"
+    name_variations: []
+  
+  "108":
+    canonical_name: "Brazil"
+    name_variations: []
+  
+  "109":
+    canonical_name: "Guinea-Bissau"
+    name_variations: []
+  
+  "110":
+    canonical_name: "Hawaii"
+    name_variations: []
+  
+  "111":
+    canonical_name: "Heard I."
+    name_variations: []
+  
+  "112":
+    canonical_name: "Chile"
+    name_variations: []
+  
+  "114":
+    canonical_name: "Isle of Man"
+    name_variations: []
+  
+  "116":
+    canonical_name: "Colombia"
+    name_variations: []
+  
+  "117":
+    canonical_name: "ITU HQ"
+    name_variations: []
+  
+  "118":
+    canonical_name: "Jan Mayen"
+    name_variations: []
+  
+  "120":
+    canonical_name: "Ecuador"
+    name_variations: []
+  
+  "122":
+    canonical_name: "Jersey"
+    name_variations: []
+  
+  "123":
+    canonical_name: "Johnston I."
+    name_variations: []
+  
+  "124":
+    canonical_name: "Juan de Nova, Europa"
+    name_variations: []
+  
+  "125":
+    canonical_name: "Juan Fernandez Is."
+    name_variations: []
+  
+  "126":
+    canonical_name: "Kaliningrad"
+    name_variations: []
+  
+  "129":
+    canonical_name: "Guyana"
+    name_variations: []
+  
+  "130":
+    canonical_name: "Kazakhstan"
+    name_variations: []
+  
+  "131":
+    canonical_name: "Kerguelen Is."
+    name_variations: []
+  
+  "132":
+    canonical_name: "Paraguay"
+    name_variations: []
+  
+  "133":
+    canonical_name: "Kermadec Is."
+    name_variations: []
+  
+  "135":
+    canonical_name: "Kyrgyzstan"
+    name_variations: []
+  
+  "136":
+    canonical_name: "Peru"
+    name_variations: []
+  
+  "137":
+    canonical_name: "Republic of Korea"
+    name_variations: ["South Korea", "ROK"]
+  
+  "138":
+    canonical_name: "Kure I."
+    name_variations: []
+  
+  "140":
+    canonical_name: "Suriname"
+    name_variations: []
+  
+  "141":
+    canonical_name: "Falkland Is."
+    name_variations: []
+  
+  "142":
+    canonical_name: "Lakshadweep Is."
+    name_variations: []
+  
+  "143":
+    canonical_name: "Laos"
+    name_variations: []
+  
+  "144":
+    canonical_name: "Uruguay"
+    name_variations: []
+  
+  "145":
+    canonical_name: "Latvia"
+    name_variations: []
+  
+  "146":
+    canonical_name: "Lithuania"
+    name_variations: []
+  
+  "147":
+    canonical_name: "Lord Howe I."
+    name_variations: ["Lord Howe Island", "Lord Howe"]
+  
+  "148":
+    canonical_name: "Venezuela"
+    name_variations: []
+  
+  "149":
+    canonical_name: "Azores"
+    name_variations: []
+  
+  "150":
+    canonical_name: "Australia"
+    name_variations: []
+  
+  "152":
+    canonical_name: "Macao"
+    name_variations: []
+  
+  "153":
+    canonical_name: "Macquarie I."
+    name_variations: []
+  
+  "157":
+    canonical_name: "Nauru"
+    name_variations: []
+  
+  "158":
+    canonical_name: "Vanuatu"
+    name_variations: []
+  
+  "159":
+    canonical_name: "Maldives"
+    name_variations: []
+  
+  "160":
+    canonical_name: "Tonga"
+    name_variations: []
+  
+  "161":
+    canonical_name: "Malpelo I."
+    name_variations: []
+  
+  "162":
+    canonical_name: "New Caledonia"
+    name_variations: []
+  
+  "163":
+    canonical_name: "Papua New Guinea"
+    name_variations: []
+  
+  "165":
+    canonical_name: "Mauritius"
+    name_variations: []
+  
+  "166":
+    canonical_name: "Mariana Is."
+    name_variations: []
+  
+  "167":
+    canonical_name: "Market Reef"
+    name_variations: []
+  
+  "168":
+    canonical_name: "Marshall Is."
+    name_variations: []
+  
+  "169":
+    canonical_name: "Mayotte"
+    name_variations: []
+  
+  "170":
+    canonical_name: "New Zealand"
+    name_variations: []
+  
+  "171":
+    canonical_name: "Mellish Reef"
+    name_variations: []
+  
+  "172":
+    canonical_name: "Pitcairn I."
+    name_variations: []
+  
+  "173":
+    canonical_name: "Micronesia"
+    name_variations: []
+  
+  "174":
+    canonical_name: "Midway I."
+    name_variations: []
+  
+  "175":
+    canonical_name: "French Polynesia"
+    name_variations: []
+  
+  "176":
+    canonical_name: "Fiji"
+    name_variations: []
+  
+  "177":
+    canonical_name: "Minami Torishima"
+    name_variations: []
+  
+  "179":
+    canonical_name: "Moldova"
+    name_variations: []
+  
+  "180":
+    canonical_name: "Mount Athos"
+    name_variations: []
+  
+  "181":
+    canonical_name: "Mozambique"
+    name_variations: []
+  
+  "182":
+    canonical_name: "Navassa I."
+    name_variations: []
+  
+  "185":
+    canonical_name: "Solomon Is."
+    name_variations: []
+  
+  "187":
+    canonical_name: "Niger"
+    name_variations: []
+  
+  "188":
+    canonical_name: "Niue"
+    name_variations: []
+  
+  "189":
+    canonical_name: "Norfolk I."
+    name_variations: []
+  
+  "190":
+    canonical_name: "Samoa"
+    name_variations: []
+  
+  "191":
+    canonical_name: "North Cook Is."
+    name_variations: []
+  
+  "192":
+    canonical_name: "Ogasawara"
+    name_variations: []
+  
+  "195":
+    canonical_name: "Annobon I."
+    name_variations: []
+  
+  "197":
+    canonical_name: "Palmyra & Jarvis Is."
+    name_variations: []
+  
+  "199":
+    canonical_name: "Peter 1 I."
+    name_variations: []
+  
+  "201":
+    canonical_name: "Prince Edward & Marion Is."
+    name_variations: []
+  
+  "202":
+    canonical_name: "Puerto Rico"
+    name_variations: []
+  
+  "203":
+    canonical_name: "Andorra"
+    name_variations: []
+  
+  "204":
+    canonical_name: "Revillagigedo"
+    name_variations: []
+  
+  "205":
+    canonical_name: "Ascension I."
+    name_variations: []
+  
+  "206":
+    canonical_name: "Austria"
+    name_variations: []
+  
+  "207":
+    canonical_name: "Rodrigues I."
+    name_variations: []
+  
+  "209":
+    canonical_name: "Belgium"
+    name_variations: []
+  
+  "211":
+    canonical_name: "Sable I."
+    name_variations: []
+  
+  "212":
+    canonical_name: "Bulgaria"
+    name_variations: []
+  
+  "213":
+    canonical_name: "Saint Martin"
+    name_variations: []
+  
+  "214":
+    canonical_name: "Corsica"
+    name_variations: []
+  
+  "215":
+    canonical_name: "Cyprus"
+    name_variations: []
+  
+  "216":
+    canonical_name: "San Andres & Providencia"
+    name_variations: []
+  
+  "217":
+    canonical_name: "San Felix & San Ambrosio"
+    name_variations: []
+  
+  "219":
+    canonical_name: "Sao Tome & Principe"
+    name_variations: []
+  
+  "221":
+    canonical_name: "Denmark"
+    name_variations: []
+  
+  "222":
+    canonical_name: "Faroe Is."
+    name_variations: []
+  
+  "223":
+    canonical_name: "England"
+    name_variations: []
+  
+  "224":
+    canonical_name: "Finland"
+    name_variations: []
+  
+  "225":
+    canonical_name: "Sardinia"
+    name_variations: []
+  
+  "227":
+    canonical_name: "France"
+    name_variations: []
+  
+  "230":
+    canonical_name: "Federal Republic of Germany"
+    name_variations: ["Germany", "Deutschland", "DE"]
+  
+  "232":
+    canonical_name: "Somalia"
+    name_variations: []
+  
+  "233":
+    canonical_name: "Gibraltar"
+    name_variations: []
+  
+  "234":
+    canonical_name: "South Cook Is."
+    name_variations: []
+  
+  "235":
+    canonical_name: "South Georgia I."
+    name_variations: []
+  
+  "236":
+    canonical_name: "Greece"
+    name_variations: []
+  
+  "237":
+    canonical_name: "Greenland"
+    name_variations: []
+  
+  "238":
+    canonical_name: "South Orkney Is."
+    name_variations: []
+  
+  "239":
+    canonical_name: "Hungary"
+    name_variations: []
+  
+  "240":
+    canonical_name: "South Sandwich Is."
+    name_variations: []
+  
+  "241":
+    canonical_name: "South Shetland Is."
+    name_variations: []
+  
+  "242":
+    canonical_name: "Iceland"
+    name_variations: []
+  
+  "245":
+    canonical_name: "Ireland"
+    name_variations: []
+  
+  "246":
+    canonical_name: "Sovereign Military Order of Malta"
+    name_variations: []
+  
+  "247":
+    canonical_name: "Spratly Is."
+    name_variations: []
+  
+  "248":
+    canonical_name: "Italy"
+    name_variations: []
+  
+  "249":
+    canonical_name: "St. Kitts & Nevis"
+    name_variations: []
+  
+  "250":
+    canonical_name: "St. Helena"
+    name_variations: []
+  
+  "251":
+    canonical_name: "Liechtenstein"
+    name_variations: []
+  
+  "252":
+    canonical_name: "St. Paul I."
+    name_variations: []
+  
+  "253":
+    canonical_name: "St. Peter & St. Paul Rocks"
+    name_variations: []
+  
+  "254":
+    canonical_name: "Luxembourg"
+    name_variations: []
+  
+  "256":
+    canonical_name: "Madeira Is."
+    name_variations: []
+  
+  "257":
+    canonical_name: "Malta"
+    name_variations: []
+  
+  "259":
+    canonical_name: "Svalbard"
+    name_variations: []
+  
+  "260":
+    canonical_name: "Monaco"
+    name_variations: []
+  
+  "262":
+    canonical_name: "Tajikistan"
+    name_variations: []
+  
+  "263":
+    canonical_name: "Netherlands"
+    name_variations: []
+  
+  "265":
+    canonical_name: "Northern Ireland"
+    name_variations: []
+  
+  "266":
+    canonical_name: "Norway"
+    name_variations: []
+  
+  "269":
+    canonical_name: "Poland"
+    name_variations: []
+  
+  "270":
+    canonical_name: "Tokelau Is."
+    name_variations: []
+  
+  "272":
+    canonical_name: "Portugal"
+    name_variations: []
+  
+  "273":
+    canonical_name: "Trindade & Martim Vaz Is."
+    name_variations: []
+  
+  "274":
+    canonical_name: "Tristan da Cunha & Gough I."
+    name_variations: []
+  
+  "275":
+    canonical_name: "Romania"
+    name_variations: []
+  
+  "276":
+    canonical_name: "Tromelin I."
+    name_variations: []
+  
+  "277":
+    canonical_name: "St. Pierre & Miquelon"
+    name_variations: []
+  
+  "278":
+    canonical_name: "San Marino"
+    name_variations: []
+  
+  "279":
+    canonical_name: "Scotland"
+    name_variations: []
+  
+  "280":
+    canonical_name: "Turkmenistan"
+    name_variations: []
+  
+  "281":
+    canonical_name: "Spain"
+    name_variations: []
+  
+  "282":
+    canonical_name: "Tuvalu"
+    name_variations: []
+  
+  "283":
+    canonical_name: "UK Sovereign Base Areas on Cyprus"
+    name_variations: []
+  
+  "284":
+    canonical_name: "Sweden"
+    name_variations: []
+  
+  "285":
+    canonical_name: "Virgin Is."
+    name_variations: []
+  
+  "286":
+    canonical_name: "Uganda"
+    name_variations: []
+  
+  "287":
+    canonical_name: "Switzerland"
+    name_variations: []
+  
+  "288":
+    canonical_name: "Ukraine"
+    name_variations: []
+  
+  "289":
+    canonical_name: "United Nations HQ "
+    name_variations: []
+  
+  "291":
+    canonical_name: "United States of America"
+    name_variations: ["USA", "US", "United States", "America"]
+  
+  "292":
+    canonical_name: "Uzbekistan"
+    name_variations: []
+  
+  "293":
+    canonical_name: "Viet Nam"
+    name_variations: ["Vietnam"]
+  
+  "294":
+    canonical_name: "Wales"
+    name_variations: []
+  
+  "295":
+    canonical_name: "Vatican"
+    name_variations: []
+  
+  "296":
+    canonical_name: "Serbia"
+    name_variations: []
+  
+  "297":
+    canonical_name: "Wake I."
+    name_variations: []
+  
+  "298":
+    canonical_name: "Wallis & Futuna Is."
+    name_variations: []
+  
+  "299":
+    canonical_name: "West Malaysia"
+    name_variations: []
+  
+  "301":
+    canonical_name: "W. Kiribati (Gilbert Is. )"
+    name_variations: []
+  
+  "302":
+    canonical_name: "Western Sahara"
+    name_variations: []
+  
+  "303":
+    canonical_name: "Willis I."
+    name_variations: []
+  
+  "304":
+    canonical_name: "Bahrain"
+    name_variations: []
+  
+  "305":
+    canonical_name: "Bangladesh"
+    name_variations: []
+  
+  "306":
+    canonical_name: "Bhutan"
+    name_variations: []
+  
+  "308":
+    canonical_name: "Costa Rica"
+    name_variations: []
+  
+  "309":
+    canonical_name: "Myanmar"
+    name_variations: []
+  
+  "312":
+    canonical_name: "Cambodia"
+    name_variations: []
+  
+  "315":
+    canonical_name: "Sri Lanka"
+    name_variations: []
+  
+  "318":
+    canonical_name: "China"
+    name_variations: ["PRC"]
+  
+  "321":
+    canonical_name: "Hong Kong"
+    name_variations: []
+  
+  "324":
+    canonical_name: "India"
+    name_variations: []
+  
+  "327":
+    canonical_name: "Indonesia"
+    name_variations: []
+  
+  "330":
+    canonical_name: "Iran"
+    name_variations: []
+  
+  "333":
+    canonical_name: "Iraq"
+    name_variations: []
+  
+  "336":
+    canonical_name: "Israel"
+    name_variations: []
+  
+  "339":
+    canonical_name: "Japan"
+    name_variations: []
+  
+  "342":
+    canonical_name: "Jordan"
+    name_variations: []
+  
+  "344":
+    canonical_name: "Democratic People's Rep. of Korea"
+    name_variations: ["North Korea", "DPRK"]
+  
+  "345":
+    canonical_name: "Brunei Darussalam"
+    name_variations: []
+  
+  "354":
+    canonical_name: "Lebanon"
+    name_variations: []
+  
+  "363":
+    canonical_name: "Mongolia"
+    name_variations: []
+  
+  "369":
+    canonical_name: "Nepal"
+    name_variations: []
+  
+  "370":
+    canonical_name: "Oman"
+    name_variations: []
+  
+  "372":
+    canonical_name: "Pakistan"
+    name_variations: []
+  
+  "375":
+    canonical_name: "Philippines"
+    name_variations: []
+  
+  "376":
+    canonical_name: "Qatar"
+    name_variations: []
+  
+  "378":
+    canonical_name: "Saudi Arabia"
+    name_variations: []
+  
+  "379":
+    canonical_name: "Seychelles"
+    name_variations: []
+  
+  "381":
+    canonical_name: "Singapore"
+    name_variations: []
+  
+  "382":
+    canonical_name: "Djibouti"
+    name_variations: []
+  
+  "384":
+    canonical_name: "Syria"
+    name_variations: []
+  
+  "386":
+    canonical_name: "Taiwan"
+    name_variations: ["ROC"]
+  
+  "387":
+    canonical_name: "Thailand"
+    name_variations: []
+  
+  "390":
+    canonical_name: "Turkey"
+    name_variations: []
+  
+  "391":
+    canonical_name: "United Arab Emirates"
+    name_variations: []
+  
+  "400":
+    canonical_name: "Algeria"
+    name_variations: []
+  
+  "401":
+    canonical_name: "Angola"
+    name_variations: []
+  
+  "402":
+    canonical_name: "Botswana"
+    name_variations: []
+  
+  "404":
+    canonical_name: "Burundi"
+    name_variations: []
+  
+  "406":
+    canonical_name: "Cameroon"
+    name_variations: []
+  
+  "408":
+    canonical_name: "Central Africa"
+    name_variations: []
+  
+  "409":
+    canonical_name: "Cape Verde"
+    name_variations: []
+  
+  "410":
+    canonical_name: "Chad"
+    name_variations: []
+  
+  "411":
+    canonical_name: "Comoros"
+    name_variations: []
+  
+  "412":
+    canonical_name: "Republic of the Congo"
+    name_variations: []
+  
+  "414":
+    canonical_name: "Democratic Republic of the Congo"
+    name_variations: []
+  
+  "416":
+    canonical_name: "Benin"
+    name_variations: []
+  
+  "420":
+    canonical_name: "Gabon"
+    name_variations: []
+  
+  "422":
+    canonical_name: "The Gambia"
+    name_variations: []
+  
+  "424":
+    canonical_name: "Ghana"
+    name_variations: []
+  
+  "428":
+    canonical_name: "Cote d'Ivoire"
+    name_variations: ["Ivory Coast"]
+  
+  "430":
+    canonical_name: "Kenya"
+    name_variations: []
+  
+  "432":
+    canonical_name: "Lesotho"
+    name_variations: []
+  
+  "434":
+    canonical_name: "Liberia"
+    name_variations: []
+  
+  "436":
+    canonical_name: "Libya"
+    name_variations: []
+  
+  "438":
+    canonical_name: "Madagascar"
+    name_variations: []
+  
+  "440":
+    canonical_name: "Malawi"
+    name_variations: []
+  
+  "442":
+    canonical_name: "Mali"
+    name_variations: []
+  
+  "444":
+    canonical_name: "Mauritania"
+    name_variations: []
+  
+  "446":
+    canonical_name: "Morocco"
+    name_variations: []
+  
+  "450":
+    canonical_name: "Nigeria"
+    name_variations: []
+  
+  "452":
+    canonical_name: "Zimbabwe"
+    name_variations: []
+  
+  "453":
+    canonical_name: "Reunion I."
+    name_variations: []
+  
+  "454":
+    canonical_name: "Rwanda"
+    name_variations: []
+  
+  "456":
+    canonical_name: "Senegal"
+    name_variations: []
+  
+  "458":
+    canonical_name: "Sierra Leone"
+    name_variations: []
+  
+  "460":
+    canonical_name: "Rotuma I."
+    name_variations: []
+  
+  "462":
+    canonical_name: "Republic of South Africa"
+    name_variations: []
+  
+  "464":
+    canonical_name: "Namibia"
+    name_variations: []
+  
+  "466":
+    canonical_name: "Sudan"
+    name_variations: []
+  
+  "468":
+    canonical_name: "Kingdom of Eswatini"
+    name_variations: []
+  
+  "470":
+    canonical_name: "Tanzania"
+    name_variations: []
+  
+  "474":
+    canonical_name: "Tunisia"
+    name_variations: []
+  
+  "478":
+    canonical_name: "Egypt"
+    name_variations: []
+  
+  "480":
+    canonical_name: "Burkina Faso"
+    name_variations: []
+  
+  "482":
+    canonical_name: "Zambia"
+    name_variations: []
+  
+  "483":
+    canonical_name: "Togo"
+    name_variations: []
+  
+  "489":
+    canonical_name: "Conway Reef"
+    name_variations: []
+  
+  "490":
+    canonical_name: "Banaba I. (Ocean I.)"
+    name_variations: []
+  
+  "492":
+    canonical_name: "Yemen"
+    name_variations: []
+  
+  "497":
+    canonical_name: "Croatia"
+    name_variations: []
+  
+  "499":
+    canonical_name: "Slovenia"
+    name_variations: []
+  
+  "501":
+    canonical_name: "Bosnia-Herzegovina"
+    name_variations: []
+  
+  "502":
+    canonical_name: "North Macedonia (Republic of)"
+    name_variations: []
+  
+  "503":
+    canonical_name: "Czech Republic"
+    name_variations: []
+  
+  "504":
+    canonical_name: "Slovak Republic"
+    name_variations: []
+  
+  "505":
+    canonical_name: "Pratas I."
+    name_variations: []
+  
+  "506":
+    canonical_name: "Scarborough Reef"
+    name_variations: []
+  
+  "507":
+    canonical_name: "Temotu Province"
+    name_variations: []
+  
+  "508":
+    canonical_name: "Austral I."
+    name_variations: []
+  
+  "509":
+    canonical_name: "Marquesas Is."
+    name_variations: []
+  
+  "510":
+    canonical_name: "Palestine"
+    name_variations: []
+  
+  "511":
+    canonical_name: "Timor-Leste"
+    name_variations: []
+  
+  "512":
+    canonical_name: "Chesterfield Is."
+    name_variations: []
+  
+  "513":
+    canonical_name: "Ducie I."
+    name_variations: []
+  
+  "514":
+    canonical_name: "Montenegro"
+    name_variations: []
+  
+  "515":
+    canonical_name: "Swains I."
+    name_variations: ["Swains", "Swains Island"]
+  
+  "516":
+    canonical_name: "Saint Barthelemy"
+    name_variations: []
+  
+  "517":
+    canonical_name: "Curacao"
+    name_variations: []
+  
+  "518":
+    canonical_name: "Sint Maarten"
+    name_variations: []
+  
+  "519":
+    canonical_name: "Saba & St. Eustatius"
+    name_variations: []
+  
+  "520":
+    canonical_name: "Bonaire"
+    name_variations: []
+  
+  "521":
+    canonical_name: "South Sudan (Republic of)"
+    name_variations: []
+  
+  "522":
+    canonical_name: "Republic of Kosovo"
+    name_variations: []

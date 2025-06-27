@@ -4,7 +4,9 @@ import time
 import sys
 import threading
 import os
-from typing import Optional
+import re
+import yaml
+from typing import Optional, Dict, List
 from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeoutError
 
 import paho.mqtt.client as mqtt
@@ -13,7 +15,67 @@ from mcp.types import LATEST_PROTOCOL_VERSION, ToolAnnotations
 
 # Initialize MCP server
 mcp = FastMCP("PSKReporter DX Service", protocol_version=LATEST_PROTOCOL_VERSION)
-dxcc_entities = {}  # entity_code -> entity_name
+
+# Load DXCC entities from YAML file
+def load_dxcc_entities() -> Dict[str, Dict]:
+    """Load DXCC entities from YAML file."""
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    yaml_path = os.path.join(script_dir, "dxcc_entities.yaml")
+    
+    try:
+        with open(yaml_path, 'r', encoding='utf-8') as file:
+            data = yaml.safe_load(file)
+            return data.get('dxcc_entities', {})
+    except FileNotFoundError:
+        print(f"Warning: dxcc_entities.yaml not found at {yaml_path}")
+        return {}
+    except yaml.YAMLError as e:
+        print(f"Error parsing dxcc_entities.yaml: {e}")
+        return {}
+
+# Load the DXCC entities
+dxcc_entities_data = load_dxcc_entities()
+
+# Create simple mapping for backward compatibility
+dxcc_entities = {}
+for code, entity_data in dxcc_entities_data.items():
+    dxcc_entities[code] = entity_data['canonical_name']
+
+# Create reverse mapping for country name lookup
+country_name_to_code = {}
+for code, entity_data in dxcc_entities_data.items():
+    canonical_name = entity_data['canonical_name']
+    name_variations = entity_data.get('name_variations', [])
+    
+    # Add canonical name (case insensitive)
+    country_name_to_code[canonical_name.lower()] = code
+    
+    # Add variations (case insensitive)
+    for variation in name_variations:
+        country_name_to_code[variation.lower()] = code
+
+# Function to convert country name to DXCC code
+def country_name_to_dxcc_code(country_name):
+    """Convert a country name to its DXCC code."""
+    if not country_name:
+        return None
+    
+    # Try exact match (case insensitive)
+    country_lower = country_name.lower().strip()
+    if country_lower in country_name_to_code:
+        return country_name_to_code[country_lower]
+    
+    return None
+
+# Function to get name variations for a country
+def get_country_variations(country_name):
+    """Get common variations for a country name."""
+    # Find the entity by canonical name
+    for code, entity_data in dxcc_entities_data.items():
+        if entity_data['canonical_name'].lower() == country_name.lower():
+            return entity_data.get('name_variations', [])
+    
+    return []
 
 # Get the directory where this script is located
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -35,37 +97,6 @@ def debug_print(*args, **kwargs):
     # Also write to stderr
     print(log_line, file=sys.stderr)
     sys.stderr.flush()
-
-# DXCC Entity mapping from code to name
-def load_dxcc_entities():
-    global dxcc_entities
-    
-    debug_print("Loading DXCC entities...")
-    try:
-        # Use the script directory to find dxcc.txt
-        dxcc_path = os.path.join(SCRIPT_DIR, "dxcc.txt")
-        debug_print(f"Looking for dxcc.txt at: {dxcc_path}")
-        
-        with open(dxcc_path, "r") as f:
-            lines = f.readlines()
-        
-        dxcc_entities = {}
-        for line in lines:
-            line = line.strip()
-            if line and not line.startswith("#"):
-                try:
-                    parts = line.split(':', 1)
-                    if len(parts) == 2:
-                        entity_code = parts[0].strip().strip('"')
-                        entity_name = parts[1].strip().strip('"').strip(',').strip('"')
-                        dxcc_entities[entity_code] = entity_name
-                except Exception as e:
-                    debug_print(f"Error processing line: {line} - {e}")
-        debug_print(f"Loaded {len(dxcc_entities)} DXCC entities")
-    except FileNotFoundError:
-        debug_print(f"Warning: dxcc.txt not found at {dxcc_path}, using empty entity list")
-    except Exception as e:
-        debug_print(f"Error loading DXCC entities: {e}")
 
 # Process a spot from MQTT and format it with all available data
 def process_spot(raw_spot):
@@ -358,16 +389,30 @@ def get_spots(band: Optional[str] = None,
     - `receivercall`: Callsign of receiving station to filter for
     - `senderlocator`: Maidenhead grid locator of sending station (e.g., "EN51", "JO20")
     - `receiverlocator`: Maidenhead grid locator of receiving station
-    - `sendercountry`: DXCC entity code for sender's country (use search_dxcc_entities() to find codes)
-    - `receivercountry`: DXCC entity code for receiver's country
+    - `sendercountry`: Country name for sender's country (e.g., "Japan", "USA", "Germany", "Swains Island")
+    - `receivercountry`: Country name for receiver's country
     - `duration`: Collection time in seconds (default: 10, max: 10)
+    
+    **Country Name Examples:**
+    The tool accepts country names with case-insensitive matching and partial search:
+    - Full names: "United States of America", "Japan", "Germany"
+    - Case variations: "japan", "JAPAN", "Japan" all work the same
+    - Partial matches: "swains" will match "Swains I.", "korea" will match "Republic of Korea"
+    - Common variations: "USA", "UK", "Germany" are automatically mapped to their full names
+    
+    **Country Name Discovery:**
+    Use the `dxcc_entities` MCP resource to discover available countries and their variations:
+    - Browse all 340 DXCC entities with their official names
+    - See common variations for each country (e.g., "USA" for "United States of America")
+    - Get usage examples and search tips
     
     **Common Use Cases:**
     1. **Find stations from a specific country**: Use `sendercountry` parameter
-       - Example: "Give me 10 FT8 Japan stations on 20m" → `get_spots(mode="FT8", sendercountry="339", band="20m", duration=10)`
+       - Example: "Give me 10 FT8 Japan stations on 20m" → `get_spots(mode="FT8", sendercountry="Japan", band="20m", duration=10)`
+       - Example: "Show me USA stations on 40m" → `get_spots(sendercountry="USA", band="40m", duration=10)`
     
     2. **Check propagation to a specific location**: Use `receivercountry` and `receiverlocator`
-       - Example: "What FT8 stations from Japan can I hear on 160m" → `get_spots(mode="FT8", sendercountry="339", band="160m", duration=10)`
+       - Example: "What FT8 stations from Japan can I hear on 160m" → `get_spots(mode="FT8", sendercountry="Japan", band="160m", duration=10)`
     
     3. **Monitor a specific station**: Use `sendercall` parameter
        - Example: "On what bands and modes does W9KM operate" → `get_spots(sendercall="W9KM", duration=10)`
@@ -378,9 +423,9 @@ def get_spots(band: Optional[str] = None,
     **Tips for Better Results:**
     - Use the full `duration` (10 seconds) for better spot collection
     - Combine multiple filters to get more specific results
-    - Use `search_dxcc_entities()` to find country codes
     - Popular modes: FT8, FT4, CW, SSB
     - Popular bands: 20m, 40m, 80m, 160m, 10m
+    - Use the `dxcc_entities` resource to find exact country names and variations
     
     **Response Format:**
     Returns a formatted markdown report showing:
@@ -405,11 +450,29 @@ def get_spots(band: Optional[str] = None,
         duration = 10
         debug_print(f"Duration capped at maximum 10 seconds")
     
+    # Convert country names to DXCC codes if provided
+    sendercountry_code = None
+    receivercountry_code = None
+    
+    if sendercountry:
+        sendercountry_code = country_name_to_dxcc_code(sendercountry)
+        if sendercountry_code:
+            debug_print(f"Converted sendercountry '{sendercountry}' to DXCC code '{sendercountry_code}'")
+        else:
+            debug_print(f"Warning: Could not convert sendercountry '{sendercountry}' to DXCC code")
+    
+    if receivercountry:
+        receivercountry_code = country_name_to_dxcc_code(receivercountry)
+        if receivercountry_code:
+            debug_print(f"Converted receivercountry '{receivercountry}' to DXCC code '{receivercountry_code}'")
+        else:
+            debug_print(f"Warning: Could not convert receivercountry '{receivercountry}' to DXCC code")
+    
     params = {
         'band': band, 'mode': mode, 'sendercall': sendercall,
         'receivercall': receivercall, 'senderlocator': senderlocator,
-        'receiverlocator': receiverlocator, 'sendercountry': sendercountry,
-        'receivercountry': receivercountry
+        'receiverlocator': receiverlocator, 'sendercountry': sendercountry_code,
+        'receivercountry': receivercountry_code
     }
     
     try:
@@ -448,149 +511,93 @@ def get_spots(band: Optional[str] = None,
         debug_print(f"Exception traceback: {traceback.format_exc()}")
         return f"# Error\n\nInternal server error: {str(e)}"
 
-@mcp.tool(
-    annotations=ToolAnnotations(
-        readOnlyHint=True,
-        idempotentHint=True,
-        openWorldHint=False
-    ),
-    description="Get the list of DXCC entities (country codes and names) for mapping country names to entity codes."
-)
-def get_dxcc_entities() -> str:
-    """
-    Returns the complete list of DXCC entities as a formatted table.
-    This is useful for converting country names to entity codes when filtering spots.
-    """
-    debug_print("*** GET_DXCC_ENTITIES CALLED ***")
-    
-    if not dxcc_entities:
-        debug_print("DXCC entities not loaded, attempting to load...")
-        load_dxcc_entities()
-    
-    if not dxcc_entities:
-        return "# Error\n\nDXCC entities could not be loaded. Please check if dxcc.txt is available."
+@mcp.resource("mcp://pskreporter/dxcc_entities")
+def get_dxcc_entities_resource():
+    """Get the complete list of DXCC entities for country name lookup and discovery."""
+    debug_print("*** DXCC_ENTITIES RESOURCE REQUESTED ***")
     
     # Create a sorted list for better presentation
-    sorted_entities = sorted(dxcc_entities.items(), key=lambda x: int(x[0]))
+    sorted_entities = sorted(dxcc_entities_data.items(), key=lambda x: int(x[0]))
     
-    md = f"""# DXCC Entities Reference
+    # Build markdown content
+    markdown_content = """# DXCC Entities for Amateur Radio Country Filtering
 
-**Total Entities:** {len(dxcc_entities)}
+This resource provides the complete list of DXCC (DX Century Club) entities for use with the `get_spots()` tool. Use these exact country names in the `sendercountry` or `receivercountry` parameters.
 
-This resource provides the mapping between DXCC entity codes and country/territory names used by PSKReporter.
+## Usage Tips
 
-## Entity Code to Country Name Mapping
+- **Case-insensitive**: All names work regardless of capitalization
+- **Partial matching**: Use partial names (e.g., "swains" matches "Swains I.")
+- **Common variations**: Many countries have automatic variations (e.g., "USA" → "United States of America")
+- **Exact names**: Use the exact names from this list for best results
 
-| Code | Country/Territory |
-|------|------------------|"""
+## Example Usage
+
+```python
+get_spots(sendercountry='Japan', mode='FT8', duration=10)
+get_spots(sendercountry='United States of America', band='20m', duration=10)
+get_spots(sendercountry='Swains I.', duration=10)
+```
+
+## Complete DXCC Entity List
+
+| Code | Country Name | Common Variations |
+|------|-------------|-------------------|
+"""
     
-    for entity_code, entity_name in sorted_entities:
-        md += f"\n| {entity_code} | {entity_name} |"
+    # Add each entity to the table
+    for code, entity_data in sorted_entities:
+        name = entity_data['canonical_name']
+        variations = entity_data.get('name_variations', [])
+        
+        # Format variations as a comma-separated list
+        variations_text = ", ".join(variations) if variations else "—"
+        
+        # Escape any pipe characters in the text to avoid breaking the markdown table
+        name = name.replace("|", "\\|")
+        variations_text = variations_text.replace("|", "\\|")
+        
+        markdown_content += f"| {code} | {name} | {variations_text} |\n"
     
-    md += f"""
+    # Add footer information
+    markdown_content += f"""
+## Summary
 
-## Usage Examples
+- **Total Entities**: {len(dxcc_entities_data)}
+- **Data Source**: DXCC (DX Century Club) official entity list
+- **Last Updated**: Current as of latest DXCC standards
 
-- To filter for stations from Japan, use `sendercountry=339` or `receivercountry=339`
-- To filter for stations from the United States, use `sendercountry=291` or `receivercountry=291`
-- To filter for stations from Germany, use `sendercountry=230` or `receivercountry=230`
+## Search Strategies
 
-## Search Tips
+1. **Start with common names**: Try "USA", "UK", "Germany", "Japan"
+2. **Use partial matches**: "swains" will find "Swains I."
+3. **Check variations**: Look in the "Common Variations" column for alternatives
+4. **Case doesn't matter**: "japan", "JAPAN", "Japan" all work the same
 
-You can search this list to find the correct entity code for any country or territory. Common examples:
-- **Japan**: 339
-- **United States**: 291  
-- **Germany**: 230
-- **United Kingdom**: 223 (England), 265 (Northern Ireland), 279 (Scotland), 294 (Wales)
-- **Canada**: 1
-- **Australia**: 150
+## Popular Countries
 
-*Note: Some countries have multiple entity codes for different territories or regions.*"""
+Some frequently used countries with their variations:
+
+- **United States of America**: USA, US, America, United States
+- **United Kingdom**: UK, Great Britain, Britain, England  
+- **Germany**: Germany, Deutschland, DE
+- **Japan**: Japan (no common variations)
+- **Canada**: Canada (no common variations)
+- **Australia**: Australia (no common variations)
+
+---
+*Data provided by PSK Reporter MCP Server - 73!*
+"""
     
-    debug_print(f"Returned {len(dxcc_entities)} DXCC entities")
-    debug_print("*** GET_DXCC_ENTITIES COMPLETE ***")
+    debug_print(f"Returned DXCC entities resource with {len(dxcc_entities_data)} entities in markdown format")
+    debug_print("*** DXCC_ENTITIES RESOURCE COMPLETE ***")
     
-    return md
-
-@mcp.tool(
-    annotations=ToolAnnotations(
-        readOnlyHint=True,
-        idempotentHint=True,
-        openWorldHint=False
-    ),
-    description="Search for DXCC entities by country name or partial match."
-)
-def search_dxcc_entities(query: str) -> str:
-    """
-    Search for DXCC entities by country name or partial match.
-    Useful for finding entity codes when you know part of a country name.
-    """
-    debug_print(f"*** SEARCH_DXCC_ENTITIES CALLED ***")
-    debug_print(f"Query: {query}")
-    
-    if not dxcc_entities:
-        debug_print("DXCC entities not loaded, attempting to load...")
-        load_dxcc_entities()
-    
-    if not dxcc_entities:
-        return "# Error\n\nDXCC entities could not be loaded. Please check if dxcc.txt is available."
-    
-    query_lower = query.lower()
-    matches = []
-    
-    for entity_code, entity_name in dxcc_entities.items():
-        if query_lower in entity_name.lower():
-            matches.append((entity_code, entity_name))
-    
-    # Sort matches by entity code
-    matches.sort(key=lambda x: int(x[0]))
-    
-    if not matches:
-        return f"""# DXCC Entity Search Results
-
-**Query:** "{query}"
-
-No DXCC entities found matching your search.
-
-Try searching for:
-- Partial country names (e.g., "japan" for "Japan")
-- Common abbreviations (e.g., "usa" for "United States of America")
-- Territory names (e.g., "hawaii" for "Hawaii")"""
-    
-    md = f"""# DXCC Entity Search Results
-
-**Query:** "{query}"  
-**Found:** {len(matches)} matching entities
-
-## Matching Entities
-
-| Code | Country/Territory |
-|------|------------------|"""
-    
-    for entity_code, entity_name in matches:
-        md += f"\n| {entity_code} | {entity_name} |"
-    
-    if len(matches) == 1:
-        entity_code, entity_name = matches[0]
-        md += f"""
-
-## Usage Example
-
-To filter for stations from {entity_name}, use:
-- `sendercountry={entity_code}` for sender country filter
-- `receivercountry={entity_code}` for receiver country filter
-
-Example: `get_spots(sendercountry="{entity_code}", duration=10)`"""
-    
-    debug_print(f"Found {len(matches)} matches for query '{query}'")
-    debug_print("*** SEARCH_DXCC_ENTITIES COMPLETE ***")
-    
-    return md
+    return markdown_content
 
 # Initialize everything when the module loads
 debug_print("Starting PSK Reporter MCP Server...")
 debug_print(f"Python version: {sys.version}")
-load_dxcc_entities()
+debug_print(f"Loaded {len(dxcc_entities_data)} DXCC entities")
 
 if __name__ == "__main__":
     debug_print("MCP server is running with stdio transport...")
