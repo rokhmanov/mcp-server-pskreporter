@@ -1,10 +1,9 @@
 {
   "mcpServers": {
     "pskreporter": {
-      "command": "uv",
-      "args": ["run", "python", "C:\\Users\\rokhm\\git\\mcp-server-pskreporter\\pskreporter_mcp_server.py"],
-      "env": {},
-      "cwd": "C:\\Users\\rokhm\\git\\mcp-server-pskreporter"
+      "command": "uvx",
+      "args": ["--from", "C:\\Users\\rokhm\\git\\mcp-server-pskreporter", "pskreporter-mcp-server"],
+      "env": {}
     }
   }
 } 

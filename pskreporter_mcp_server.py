@@ -600,7 +600,8 @@ debug_print("Starting PSK Reporter MCP Server...")
 debug_print(f"Python version: {sys.version}")
 debug_print(f"Loaded {len(dxcc_entities_data)} DXCC entities")
 
-if __name__ == "__main__":
+def main():
+    """Main entry point for the MCP server."""
     debug_print("MCP server is running with stdio transport...")
     debug_print("Server startup complete, ready to receive MCP tool calls.")
     
@@ -617,3 +618,6 @@ if __name__ == "__main__":
     finally:
         if debug_log:
             debug_log.close()
+
+if __name__ == "__main__":
+    main()

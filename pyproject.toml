@@ -1,7 +1,22 @@
 [project]
 name = "mcp-server-pskreporter"
 version = "0.1.0"
-description = "Add your description here"
+description = "MCP server for PSKReporter - Real-time amateur radio propagation data"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+keywords = ["mcp", "amateur-radio", "pskreporter", "propagation", "ham-radio"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Communications :: Ham Radio",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
 requires-python = ">=3.13"
 dependencies = [
     "annotated-types==0.7.0",
@@ -35,3 +50,11 @@ dependencies = [
     "typing-inspection==0.4.1",
     "uvicorn==0.34.2",
 ]
+
+[project.scripts]
+pskreporter-mcp-server = "pskreporter_mcp_server:main"
+
+[project.urls]
+Homepage = "https://github.com/yourusername/mcp-pskr"
+Repository = "https://github.com/yourusername/mcp-pskr"
+Issues = "https://github.com/yourusername/mcp-pskr/issues"

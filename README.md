@@ -31,49 +31,70 @@ A Model Context Protocol (MCP) server that provides real-time amateur radio prop
    uv sync
    ```
 
-3. **Verify the server works**
+3. **Install the package in development mode**
    ```bash
-   uv run python pskreporter_mcp_server.py
+   uv pip install -e .
+   ```
+
+4. **Verify the server works**
+   ```bash
+   uv run pskreporter-mcp-server
    ```
    The server should start and be ready to accept MCP connections.
 
 ## Adding to Claude Desktop
 
-**Important**: Both methods require that Claude Desktop knows the **working directory** where your `pskreporter_mcp_server.py` file is located. This is the folder containing your project files.
+### Method 1: Using Configuration File (Recommended)
 
-### Method 1: Using Claude Desktop UI (Recommended)
+1. **Copy the configuration file** to Claude Desktop's configuration directory:
+   - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+   - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - **Linux**: `~/.config/Claude/claude_desktop_config.json`
+
+2. **Update the path** in `claude_desktop_config.json` to match your system:
+   ```json
+   {
+     "mcpServers": {
+       "pskreporter": {
+         "command": "uvx",
+         "args": ["--from", "C:\\Users\\rokhm\\git\\mcp-server-pskreporter", "pskreporter-mcp-server"],
+         "env": {}
+       }
+     }
+   }
+   ```
+
+3. **Restart Claude Desktop**
+
+**Note**: The `claude_desktop_config.json` file in this repository is pre-configured for the current path. If you move the project, update the path in the `--from` argument accordingly.
+
+### Method 2: Using Claude Desktop UI
 
 1. Open Claude Desktop
 2. Go to **Settings** → **MCP Servers**
 3. Click **Add Server**
 4. Configure the server:
    - **Name**: `pskreporter`
-   - **Command**: `uv`
-   - **Arguments**: `run python pskreporter_mcp_server.py`
+   - **Command**: `uvx`
+   - **Arguments**: `--from C:\Users\rokhm\git\mcp-server-pskreporter pskreporter-mcp-server`
    - **Working Directory**: `C:\Users\rokhm\git\mcp-server-pskreporter` (your project folder)
 5. Click **Save**
 
-**What Claude Desktop does**: It will run `uv run python pskreporter_mcp_server.py` from your project directory, so it can find the `pskreporter_mcp_server.py` file and all other project files.
+### Method 3: Alternative Commands
 
-### Method 2: Using Configuration File
+You can also run the server using these alternative methods:
 
-1. **Edit the configuration file** to match your system:
-   - Open `claude_desktop_config.json`
-   - Update the `cwd` path to match your project directory
-   - For Windows, use double backslashes: `C:\\Users\\rokhm\\git\\mcp-server-pskreporter`
+**Direct Python execution:**
+```bash
+python -m pskreporter_mcp_server
+```
 
-2. **Copy the configuration file** to Claude Desktop's configuration directory:
-   - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
-   - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-   - **Linux**: `~/.config/Claude/claude_desktop_config.json`
+**Using uv run:**
+```bash
+uv run pskreporter-mcp-server
+```
 
-3. Restart Claude Desktop
-
-**Note**: The `claude_desktop_config.json` file in this repository is pre-configured for your current path. If you move the project, update the `cwd` path accordingly.
-
-### Method 3: Development Mode
-
-For development and testing:
+**Development mode:**
 ```bash
 uv run mcp dev pskreporter_mcp_server.py
 ```
@@ -160,9 +181,10 @@ This server connects to the PSKReporter MQTT feed at `mqtt.pskreporter.info` to 
    - Ensure Python 3.13+ is installed
    - Ensure uv is installed: `curl -LsSf https://astral.sh/uv/install.sh | sh`
    - Check dependencies are installed: `uv sync`
+   - Install the package: `uv pip install -e .`
 
 2. **No spots collected**
-   - Increase the `duration` parameter (up to 10 seconds)
+   - Increase the `duration` parameter (up to 30 seconds)
    - Use broader filters (fewer parameters)
    - Check your internet connection
 
@@ -172,11 +194,16 @@ This server connects to the PSKReporter MQTT feed at `mqtt.pskreporter.info` to 
    - Check for typos and try partial matches
 
 4. **Claude Desktop can't connect**
-   - Verify the working directory path is correct
-   - Ensure the server starts successfully when run manually: `uv run python pskreporter_mcp_server.py`
+   - Verify the path in `claude_desktop_config.json` is correct
+   - Ensure the server starts successfully when run manually: `uv run pskreporter-mcp-server`
    - Check Claude Desktop logs for error messages
 
-5. **"File not found" errors**
+5. **"Package does not provide any executables" error**
+   - Make sure you've installed the package: `uv pip install -e .`
+   - Verify the `pyproject.toml` has the correct script entry point
+   - Try running with `uvx --from . pskreporter-mcp-server` from the project directory
+
+6. **"File not found" errors**
    - Make sure the working directory points to the folder containing `pskreporter_mcp_server.py`
    - Verify all project files are in the same directory
 
@@ -193,10 +220,34 @@ The server creates a debug log file `mcp_server_debug.log` with detailed informa
 This project uses `uv` for dependency management. Key commands:
 
 - `uv sync` - Install dependencies
-- `uv run python pskreporter_mcp_server.py` - Run the server
-- `uv run mcp dev pskreporter_mcp_server.py` - Run in development mode
+- `uv pip install -e .` - Install package in development mode
+- `uv run pskreporter-mcp-server` - Run the server
+- `uvx --from . pskreporter-mcp-server` - Run with uvx (for testing)
+- `python -m pskreporter_mcp_server` - Run as Python module
 
 ## Configuration
+
+### Claude Desktop Configuration
+
+The `claude_desktop_config.json` file is pre-configured to use `uvx` with the local package:
+
+```json
+{
+  "mcpServers": {
+    "pskreporter": {
+      "command": "uvx",
+      "args": ["--from", "C:\\Users\\rokhm\\git\\mcp-server-pskreporter", "pskreporter-mcp-server"],
+      "env": {}
+    }
+  }
+}
+```
+
+**Key points:**
+- Uses `uvx` command for package execution
+- `--from` argument points to the local project directory
+- No working directory needed (uvx handles this automatically)
+- The executable name is `pskreporter-mcp-server` (with hyphens)
 
 ### DXCC Entities Configuration
 
