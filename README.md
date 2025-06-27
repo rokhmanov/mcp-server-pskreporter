@@ -94,7 +94,7 @@ Collect real-time amateur radio propagation spots with filtering options.
 - `receiverlocator`: Maidenhead grid locator of receiving station
 - `sendercountry`: Country name for sender's country (e.g., "Japan", "USA", "Germany")
 - `receivercountry`: Country name for receiver's country
-- `duration`: Collection time in seconds (5-10, default: 10)
+- `duration`: Collection time in seconds (5-30, default: 10)
 
 **Country Name Features:**
 - **Case-insensitive**: "japan", "JAPAN", "Japan" all work the same

@@ -381,6 +381,7 @@ def get_spots(band: Optional[str] = None,
       mean more spots returned, but the response is limited to prevent oversized messages
     - **Data Source**: Spots come from the global PSKReporter network of amateur radio
       stations reporting propagation conditions
+    - **Duration Limits**: Minimum 5 seconds, maximum 30 seconds for collection time
     
     **Parameters:**
     - `band`: Amateur radio band (e.g., "20m", "40m", "80m", "160m", "10m", "15m", "17m", "30m", "12m", "6m", "2m")
@@ -391,7 +392,7 @@ def get_spots(band: Optional[str] = None,
     - `receiverlocator`: Maidenhead grid locator of receiving station
     - `sendercountry`: Country name for sender's country (e.g., "Japan", "USA", "Germany", "Swains Island")
     - `receivercountry`: Country name for receiver's country
-    - `duration`: Collection time in seconds (default: 10, max: 10)
+    - `duration`: Collection time in seconds (default: 10, max: 30)
     
     **Country Name Examples:**
     The tool accepts country names with case-insensitive matching and partial search:
@@ -446,9 +447,9 @@ def get_spots(band: Optional[str] = None,
     if duration < 5:
         duration = 5
         debug_print(f"Duration adjusted to minimum 5 seconds")
-    elif duration > 10:
-        duration = 10
-        debug_print(f"Duration capped at maximum 10 seconds")
+    elif duration > 30:
+        duration = 30
+        debug_print(f"Duration capped at maximum 30 seconds")
     
     # Convert country names to DXCC codes if provided
     sendercountry_code = None
@@ -485,7 +486,7 @@ def get_spots(band: Optional[str] = None,
             try:
                 # Wait for completion with a reasonable timeout
                 # Use a fixed timeout that's shorter than MCP client timeout
-                max_timeout = min(duration + 5, 15)  # Cap at 15 seconds total
+                max_timeout = min(duration + 5, 35)  # Cap at 35 seconds total
                 spots, error = future.result(timeout=max_timeout)
                 
                 if error:
